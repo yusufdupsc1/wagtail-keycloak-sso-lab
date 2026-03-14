@@ -1,74 +1,44 @@
 # Wagtail + Keycloak SSO Lab
 
-> Minimal working lab to demonstrate SSO integration between Wagtail and Keycloak.
-
-## Purpose
-
-Proves capability to:
-- Set up Keycloak as Identity Provider
-- Configure Django + Wagtail with SSO
-- Debug OAuth2/OIDC flow issues
+Working lab for debugging Keycloak SSO with Django/Wagtail.
 
 ## Quick Start
 
 ```bash
-# 1. Start services
-docker compose up -d
+docker compose up -d --build
+```
 
-# 2. Configure Keycloak manually:
-#    - Open http://localhost:8080
-#    - Login: admin / admin
-#    - Create realm: wagtail-realm
-#    - Create client: wagtail-app
-#    - Set redirect URIs:
-#      http://localhost:8000/accounts/keycloak/login/callback/
-#    - Get client secret
+Configure Keycloak:
+1. Create realm: `wagtail-realm`
+2. Create client: `wagtail-app`
+3. Set redirect URIs to `http://localhost:8000/accounts/keycloak/login/callback/`
+4. Get client secret
 
-# 3. Set client secret
-#    Edit django/.env or docker-compose.yml
-
-# 4. Run migrations (in container)
+Set client secret in environment, then:
+```bash
 docker compose exec django python manage.py migrate
-
-# 5. Create superuser
 docker compose exec django python manage.py createsuperuser
-
-# 6. Test SSO
-#    Visit http://localhost:8000/accounts/keycloak/login/
 ```
 
-## Project Structure
+## Structure
 
 ```
-wagtail-keycloak-sso-lab/
-├── docker-compose.yml
-├── django/
-│   ├── Dockerfile
-│   ├── requirements.txt
-│   ├── wagtail_project/
-│   │   ├── settings.py    # SSO config here
-│   │   └── urls.py
-│   └── accounts/
-│       └── adapters.py    # Custom user mapping
-└── README.md
+django/
+├── wagtail_project/     # Django + Wagtail config
+├── accounts/            # Custom SSO adapter
+└── templates/         # Basic templates
 ```
 
 ## Key Files
 
-| File | Purpose |
-|------|---------|
-| `settings.py` | SOCIALACCOUNT_PROVIDERS config |
-| `adapters.py` | User + staff role mapping |
-| `docker-compose.yml` | All services |
+- `docker-compose.yml` - PostgreSQL, Keycloak, Django
+- `django/accounts/adapters.py` - Custom user mapping
+- `DEBUG-GUIDE.md` - Debug procedures
+- `ERROR-MAPPING.md` - Common errors
 
-## Debug Common Issues
+## Notes
 
-| Issue | Fix |
-|-------|-----|
-| redirect_uri mismatch | Match exactly in Keycloak |
-| User not staff | Check adapters.py role mapping |
-| Token error | Verify client secret |
+- Keycloak: http://localhost:8080
+- Django: http://localhost:8000
 
----
-
-Built to prove SSO debugging capability.
+Test SSO: http://localhost:8000/accounts/keycloak/login/
