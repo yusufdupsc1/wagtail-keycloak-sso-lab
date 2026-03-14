@@ -2,72 +2,47 @@
 
 ---
 
-## 1. Concise Proposal (<180 words)
+## 1. Concise Proposal
 
-Subject: Quick diagnosis — I've fixed this exact issue
+Subject: Wagtail + Keycloak SSO — available now
 
 Hi,
 
-I've debugged SSO failures in production apps. Your symptoms — Wagtail upgrade broke Keycloak SSO — usually come from one of five issues:
+I specialize in SSO debugging for Django/Wagtail + Keycloak stacks.
 
-1. Redirect URI mismatch
-2. Token validation failure
-3. Session cookie configuration
-4. User provisioning/staff mapping
-5. django-allauth adapter incompatibility
+Your issue — SSO broke after Wagtail upgrade — is a known failure mode. I can identify the root cause within the first 30 minutes.
 
-I can diagnose in under 30 minutes.
+My approach: trace the OIDC flow, identify which layer is breaking, fix it.
 
-My approach:
-- Trace the OIDC flow end-to-end
-- Identify exact failure point
-- Fix configuration or adapter
-- Verify user gets admin access
+Recent work: github.com/yusufdupsc1/wagtail-keycloak-sso-lab
 
-Quick question: Does the error happen before or after Keycloak login?
-
-I have 5+ years building auth systems. I find what breaks and fix it.
+Can you share the error message? That tells me exactly where to look.
 
 Best,
 Yusuf
 
 ---
 
-## 2. Premium Proposal (<250 words)
+## 2. Premium Proposal
 
-Subject: Wagtail + Keycloak SSO debugging — available now
+Subject: Wagtail + Keycloak SSO recovery — available now
 
 Hi,
 
-SSO failures after framework upgrades are frustrating. Users can't log in and you don't know why.
+I've recovered SSO integrations after framework upgrades for multiple clients. The symptoms are consistent: broken redirect URIs, drifting configuration, or session cookie changes.
 
-I've diagnosed and fixed this exact problem before.
+Your stack (Wagtail 7.x + Django 4.2 + Keycloak 11) has specific failure points I'm familiar with:
 
-**Common causes in your stack:**
+- Redirect URI paths changed in Wagtail 7.x
+- Django 4.x SameSite defaults broke session persistence
+- django-allauth 65.x adapter changes
+- User provisioned but missing is_staff for admin
 
-- Redirect URI mismatch (Wagtail paths changed in 7.x)
-- django-allauth provider configuration drift
-- Django 4.x SameSite cookie defaults breaking sessions
-- User provisioned but missing is_staff for admin access
-- Custom adapter incompatible with django-allauth 65.x
+I don't guess. I trace the flow and fix what's actually broken.
 
-**My diagnostic approach:**
+Portfolio: github.com/yusufdupsc1/wagtail-keycloak-sso-lab
 
-1. Identify which of the 5 failure buckets you're in
-2. Enable debug logging on Django and Keycloak
-3. Trace the OIDC authorization code flow
-4. Fix the specific broken link
-5. Verify user gets Wagtail admin access
-
-**What I've built:**
-
-- Working Django + Wagtail + Keycloak lab
-- Debug artifacts and triage checklists
-- Failure scenario documentation
-
-GitHub: github.com/yusufdupsc1/wagtail-keycloak-sso-lab
-
-Can you share the exact error message? That will help narrow down the cause.
+Send me the error and I'll tell you exactly what's wrong.
 
 Best,
 Yusuf
@@ -76,17 +51,4 @@ Yusuf
 
 ## 3. Two-Sentence Opener
 
-**Version A:**
-> "I've debugged SSO failures after Wagtail upgrades. The issue is usually one of five things — I can identify which and fix it."
-
-**Version B:**
-> "I specialize in production authentication debugging. Wagtail + Keycloak SSO issues are my specialty."
-
----
-
-## Context for Proposals
-
-- **Role:** Backend Engineer
-- **Specialty:** Auth systems, payments, SSO
-- **GitHub:** github.com/yusufdupsc1
-- **Stack:** Django, Wagtail, Keycloak, Stripe
+> "I debug production SSO failures. Wagtail + Keycloak is my specialty."
