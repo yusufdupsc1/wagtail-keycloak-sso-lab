@@ -1,0 +1,6 @@
+django>=4.2,<5.0
+wagtail>=5.0,<6.0
+psycopg2-binary
+django-allauth>=0.60.0
+python-keycloak>=3.0.0
+gunicorn
