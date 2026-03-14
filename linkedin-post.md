@@ -2,19 +2,17 @@
 
 ---
 
-Wagtail upgrade broke Keycloak SSO. Multiple failure points stacked:
+Wagtail upgrade broke Keycloak SSO. Multiple failure points stacked — redirect URI drift, SameSite cookie changes in Django 4, adapter incompatibility.
 
-1. Redirect URI mismatch after upgrade
-2. Token validation failure
-3. User staff mapping broken
+Systematic debugging across the full OIDC flow identified each break and fixed it.
 
-Systematic debugging across full OIDC flow identified each break and fixed it.
-
-What this proves:
-- Production debugging methodology
-- OIDC protocol understanding
+**What this proves:**
+- Protocol-level debugging (OIDC/OAuth2)
 - Django auth internals
+- Production debugging methodology
 
-Debug artifacts: github.com/yusufdupsc1/wagtail-keycloak-sso-lab
+Debug artifacts and working lab:
+
+github.com/yusufdupsc1/wagtail-keycloak-sso-lab
 
 #SSO #OIDC #Keycloak #Django #Wagtail #Backend #Engineering
