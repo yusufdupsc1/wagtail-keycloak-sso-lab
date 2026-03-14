@@ -22,12 +22,15 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     
-    # Wagtail
+    # Wagtail (v5+)
     'wagtail',
     'wagtail.admin',
     'wagtail.snippets',
     'wagtail.users',
-    'wagtail.site-details',
+    'wagtail.images',
+    'wagtail.documents',
+    'wagtail.search',
+    'taggit',
     
     # Third party
     'allauth',
@@ -46,7 +49,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'wagtail.middleware.WagtailPageMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = 'wagtail_project.urls'
@@ -69,17 +72,26 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'wagtail_project.wsgi.application'
 
-# Database
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'wagtail',
-        'USER': 'wagtail',
-        'PASSWORD': 'wagtail_pass',
-        'HOST': 'postgres',
-        'PORT': '5432',
+# Database - use SQLite for local testing
+import os
+if os.environ.get('DATABASE_URL', '').startswith('sqlite'):
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.environ.get('POSTGRES_DB', 'wagtail'),
+            'USER': os.environ.get('POSTGRES_USER', 'wagtail'),
+            'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'wagtail_pass'),
+            'HOST': os.environ.get('POSTGRES_HOST', 'postgres'),
+            'PORT': os.environ.get('POSTGRES_PORT', '5432'),
+        }
+    }
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [

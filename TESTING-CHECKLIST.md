@@ -1,39 +1,48 @@
 # Testing Checklist
 
-## 1. Start Services
+## 1. Start Django
+
 ```bash
-docker compose up -d --build
+cd django
+python3 manage.py runserver 127.0.0.1:8001
 ```
 
-## 2. Configure Keycloak
+- Django: http://127.0.0.1:8001
+- Admin: http://127.0.0.1:8001/admin/
+- Superuser: admin / password123
 
-1. Open http://localhost:8080
-2. Login: admin / admin
-3. Create realm: `wagtail-realm`
-4. Create client: `wagtail-app`
+## 2. Start Keycloak (Docker)
+
+```bash
+docker run -p 8080:8080 \
+  -e KEYCLOAK_ADMIN=admin \
+  -e KEYCLOAK_ADMIN_PASSWORD=admin \
+  quay.io/keycloak/keycloak:24.0 start-dev
+```
+
+- Keycloak: http://localhost:8080
+
+## 3. Configure Keycloak
+
+1. Login: admin / admin
+2. Create realm: wagtail-realm
+3. Create client: wagtail-app
    - Access Type: confidential
-   - Valid Redirect URIs:
-     ```
-     http://localhost:8000/accounts/keycloak/login/callback/
-     ```
-   - Web Origins: `http://localhost:8000`
-5. Get client secret from Credentials tab
-6. Create user: testadmin / testpass123
+   - Redirect: http://127.0.0.1:8001/accounts/keycloak/login/callback/
+4. Get client secret
 
-## 3. Configure Django
+## 4. Configure Django
 
-Set client secret in environment, then:
-```bash
-docker compose exec django python manage.py migrate
-docker compose exec django python manage.py createsuperuser
+Set in environment:
+```
+KEYCLOAK_CLIENT_SECRET=your-secret
 ```
 
-## 4. Test
+## 5. Test SSO
 
-Visit: http://localhost:8000/accounts/keycloak/login/
+Visit: http://127.0.0.1:8001/accounts/keycloak/login/
 
 ## Issues
 
 - redirect_uri_mismatch → Check Keycloak redirect URIs
 - invalid_client → Check client secret
-- 403 on /admin → Check is_staff mapping
